@@ -1,6 +1,6 @@
 package kafka.fundamentals.a.hrabianets;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -16,7 +16,7 @@ public class ConsumerMain {
 
     public static void main(String[] args) {
 
-        pringSysVariables();
+        printSysVariables();
         createTopic();
 
         KafkaConsumer consumer = getKafkaConsumer();
@@ -40,7 +40,7 @@ public class ConsumerMain {
         admin.createTopics(getNewTopics());
     }
 
-    private static void pringSysVariables() {
+    private static void printSysVariables() {
         Map<String, String> env = System.getenv();
         for (String envName : env.keySet()) {
             System.out.format("%s=%s%n", envName, env.get(envName));
@@ -48,16 +48,16 @@ public class ConsumerMain {
     }
 
     private static List<NewTopic> getNewTopics() {
-        short evenReplicationFactor = 2;
-        short oddReplicationFactor = 3;
-        NewTopic odd = new NewTopic("odd", 2, oddReplicationFactor);
-        NewTopic even = new NewTopic("even", 3, evenReplicationFactor);
-        List<NewTopic> to = List.of(odd, even);
-        return to;
+        return Collections.singletonList(
+                new NewTopic(System.getenv("TOPIC_NAME"),
+                        Integer.parseInt(System.getenv("TOPIC_PARTITIONS")),
+                        Short.parseShort(System.getenv("TOPIC_REPLICATIONS"))
+                )
+        );
     }
 
     private static List<String> getTopics() {
-        return Arrays.asList("odd", "even");
+        return Collections.singletonList(System.getenv("TOPIC_NAME"));
     }
 
     private static KafkaConsumer getKafkaConsumer() {

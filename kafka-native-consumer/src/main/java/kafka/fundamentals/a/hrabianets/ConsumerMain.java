@@ -12,16 +12,13 @@ import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 
 public class ConsumerMain {
+
     public static void main(String[] args) {
+
         Admin admin = Admin.create(getBootstrapProperties());
+        admin.createTopics(getNewTopics());
 
-        short evenReplicationFactor = 2;
-        short oddReplicationFactor = 3;
-        NewTopic odd = new NewTopic("odd", 2, oddReplicationFactor);
-        NewTopic even = new NewTopic("even", 3,evenReplicationFactor);
-        admin.createTopics(List.of(odd, even));
         KafkaConsumer consumer = getKafkaConsumer();
-
         consumer.subscribe(getTopics());
 
         System.out.println("Starting listener");
@@ -35,6 +32,15 @@ public class ConsumerMain {
             }
         }
 
+    }
+
+    private static List<NewTopic> getNewTopics() {
+        short evenReplicationFactor = 2;
+        short oddReplicationFactor = 3;
+        NewTopic odd = new NewTopic("odd", 2, oddReplicationFactor);
+        NewTopic even = new NewTopic("even", 3, evenReplicationFactor);
+        List<NewTopic> to = List.of(odd, even);
+        return to;
     }
 
     private static List<String> getTopics() {
@@ -57,7 +63,7 @@ public class ConsumerMain {
         return props;
     }
 
-    private static Properties getBootstrapProperties(){
+    private static Properties getBootstrapProperties() {
         Properties props = new Properties();
         System.out.println("BOOTSTRAP_SERVERS_CONFIG: " + System.getenv("BOOTSTRAP_SERVERS_CONFIG"));
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, System.getenv("BOOTSTRAP_SERVERS_CONFIG"));

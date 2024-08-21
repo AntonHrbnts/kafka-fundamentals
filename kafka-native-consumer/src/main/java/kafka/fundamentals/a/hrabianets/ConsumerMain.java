@@ -2,6 +2,7 @@ package kafka.fundamentals.a.hrabianets;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import org.apache.kafka.clients.admin.Admin;
@@ -15,8 +16,8 @@ public class ConsumerMain {
 
     public static void main(String[] args) {
 
-        Admin admin = Admin.create(getBootstrapProperties());
-        admin.createTopics(getNewTopics());
+        pringSysVariables();
+        createTopic();
 
         KafkaConsumer consumer = getKafkaConsumer();
         consumer.subscribe(getTopics());
@@ -32,6 +33,18 @@ public class ConsumerMain {
             }
         }
 
+    }
+
+    private static void createTopic() {
+        Admin admin = Admin.create(getBootstrapProperties());
+        admin.createTopics(getNewTopics());
+    }
+
+    private static void pringSysVariables() {
+        Map<String, String> env = System.getenv();
+        for (String envName : env.keySet()) {
+            System.out.format("%s=%s%n", envName, env.get(envName));
+        }
     }
 
     private static List<NewTopic> getNewTopics() {

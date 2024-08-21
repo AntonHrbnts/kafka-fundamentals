@@ -46,6 +46,7 @@
                     </execution>
                 </executions>
                 <configuration>
+                    <finalName>app</finalName>
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>

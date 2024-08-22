@@ -11,6 +11,7 @@
     <modules>
         <module>kafka-native-consumer</module>
         <module>kafka-native-producer</module>
+        <module>kafka-native-streams</module>
         <module>kafka-types</module>
     </modules>
 

@@ -15,14 +15,22 @@ build: maven_build consumer_build producer_build stream_build
 start:
 	cd docker && \
 	docker compose -f docker-compose.yml up -d && \
- 	docker compose exec broker-1 ./opt/kafka/bin/kafka-topics.sh --create --topic odd --partitions 3 --replication-factor 3 --bootstrap-server broker-1:19092,broker-2:19092,broker-3:19092 && \
- 	docker compose exec broker-1 ./opt/kafka/bin/kafka-topics.sh --create --topic odd-backup --partitions 3 --replication-factor 3 --bootstrap-server broker-1:19092,broker-2:19092,broker-3:19092 && \
- 	docker compose exec broker-1 ./opt/kafka/bin/kafka-topics.sh --create --topic even --partitions 2 --replication-factor 3 --bootstrap-server broker-1:19092,broker-2:19092,broker-3:19092 && \
+ 	docker exec broker-1 ./opt/kafka/bin/kafka-topics.sh --create --topic odd --partitions 3 --replication-factor 3 --bootstrap-server broker-1:19092,broker-2:19092,broker-3:19092 && \
+ 	docker exec broker-1 ./opt/kafka/bin/kafka-topics.sh --create --topic odd-backup --partitions 3 --replication-factor 3 --bootstrap-server broker-1:19092,broker-2:19092,broker-3:19092 && \
+ 	docker exec broker-1 ./opt/kafka/bin/kafka-topics.sh --create --topic even --partitions 2 --replication-factor 3 --bootstrap-server broker-1:19092,broker-2:19092,broker-3:19092 && \
  	docker compose -f docker-compose.consumers.yml -f docker-compose.producers.yml -f docker-compose.streams.yml up -d
 
 start-consumer:
 	cd docker && \
 	docker compose -f docker-compose.consumers.yml up -d
+
+start-streams:
+	cd docker && \
+	docker compose -f docker-compose.streams.yml up -d
+
+stop-streams:
+	cd docker && \
+	docker compose -f docker-compose.streams.yml down
 stop:
 	cd docker && docker compose -f docker-compose.producers.yml -f docker-compose.consumers.yml -f docker-compose.yml -f docker-compose.streams.yml down
 

@@ -2,6 +2,7 @@ package kafka.fundamentals.a.hrabianets;
 
 import java.util.Map;
 import java.util.Properties;
+import java.util.concurrent.TimeUnit;
 
 import kafka.fundamentals.a.hrabianets.types.JsonSerializer;
 import kafka.fundamentals.a.hrabianets.types.KafkaMessageDTO;
@@ -22,7 +23,7 @@ public class ProducerMain {
             System.out.format("%s=%s%n", envName, env.get(envName));
         }
 
-        try (KafkaProducer<String, KafkaMessageDTO> producer = getStringStringKafkaProducer()) {
+        try (KafkaProducer<String, KafkaMessageDTO> producer = getKafkaProducer()) {
             for (int i = 0; i < 1000; i++) {
                 ProducerRecord<String, KafkaMessageDTO> data;
 
@@ -34,12 +35,12 @@ public class ProducerMain {
                     data = new ProducerRecord<>("odd", Integer.toString(i), messageDTO);
                 }
                 producer.send(data);
-                Thread.sleep(1000L);
+                TimeUnit.SECONDS.sleep(1);
             }
         }
     }
 
-    private static KafkaProducer<String, KafkaMessageDTO> getStringStringKafkaProducer() {
+    private static KafkaProducer<String, KafkaMessageDTO> getKafkaProducer() {
         return new KafkaProducer<>(getProperties());
     }
 

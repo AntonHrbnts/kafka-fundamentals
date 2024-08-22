@@ -8,12 +8,9 @@ services:
       BOOTSTRAP_SERVERS_CONFIG: broker-1:19092,broker-2:19092,broker-3:19092
       GROUP_ID_CONFIG: test
       TOPIC_NAME: odd
-      TOPIC_PARTITIONS: 3
-      TOPIC_REPLICATIONS: 3
-#    depends_on:
-#      - broker-1
-#      - broker-2
-#      - broker-3
+    depends_on:
+      - kafka-topic-initializer-odd
+
   my-kafka-native-consumer-even:
     image: kafka-native-consumer:latest
     deploy:
@@ -23,10 +20,6 @@ services:
       BOOTSTRAP_SERVERS_CONFIG: broker-1:19092,broker-2:19092,broker-3:19092
       GROUP_ID_CONFIG: test
       TOPIC_NAME: even
-      TOPIC_PARTITIONS: 2
-      TOPIC_REPLICATIONS: 2
-#    depends_on:
-#      - broker-1
-#      - broker-2
-#      - broker-3
+    depends_on:
+      - kafka-topic-initializer-even
 

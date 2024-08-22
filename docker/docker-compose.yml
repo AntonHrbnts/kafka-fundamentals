@@ -95,7 +95,12 @@ services:
       - controller-3
       - broker-2
       - broker-1
-    entrypoint: [ "cat /opt/kafka/bin/kafka-topics.sh"]
+    entrypoint: ["/bin/sh", "-c"]
+    command: |
+      "
+      ./opt/kafka/bin/kafka-topics.sh --bootstrap-server broker-1:19092,broker-2:19092,broker-3:19092 --create --topic odd --partitions 2 --replication-factor 2
+      ./opt/kafka/bin/kafka-topics.sh --bootstrap-server broker-1:19092,broker-2:19092,broker-3:19092 --create --topic even --partitions 2 --replication-factor 2
+      "
 
   my-kafka-native-consumer-odd:
     image: kafka-native-consumer:latest

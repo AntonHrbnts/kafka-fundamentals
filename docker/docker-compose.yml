@@ -74,7 +74,6 @@ services:
       - controller-1
       - controller-2
       - controller-3
-
   broker-3:
     image: apache/kafka:latest
     container_name: broker-3
@@ -94,6 +93,9 @@ services:
       - controller-1
       - controller-2
       - controller-3
+      - broker-2
+      - broker-1
+    entrypoint: [ "cat /opt/kafka/bin/kafka-topics.sh"]
 
   my-kafka-native-consumer-odd:
     image: kafka-native-consumer:latest
@@ -138,8 +140,6 @@ services:
       - broker-1
       - broker-2
       - broker-3
-      - my-kafka-native-consumer-even
-      - my-kafka-native-consumer-odd
 #      - postgres-db
 #  postgres-db:
 #    image: postgres

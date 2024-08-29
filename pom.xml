@@ -12,6 +12,7 @@
         <module>kafka-native-consumer</module>
         <module>kafka-native-producer</module>
         <module>kafka-native-streams</module>
+        <module>my-own-kafka-connector</module>
         <module>kafka-types</module>
     </modules>
 
@@ -19,20 +20,25 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <org.apache.kafka.version>3.8.0</org.apache.kafka.version>
     </properties>
     <dependencyManagement>
         <dependencies>
             <dependency>
                 <groupId>org.apache.kafka</groupId>
                 <artifactId>kafka-clients</artifactId>
-                <version>3.8.0</version>
+                <version>${org.apache.kafka.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.kafka</groupId>
                 <artifactId>kafka-streams</artifactId>
-                <version>3.8.0</version>
+                <version>${org.apache.kafka.version}</version>
             </dependency>
-
+            <dependency>
+                <groupId>org.apache.kafka</groupId>
+                <artifactId>connect-api</artifactId>
+                <version>${org.apache.kafka.version}</version>
+            </dependency>
             <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>

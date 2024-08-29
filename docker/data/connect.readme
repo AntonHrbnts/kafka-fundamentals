@@ -1,0 +1,51 @@
+https://kafka.apache.org/quickstart
+
+Step 6: Import/export your data as streams of events with Kafka Connect
+You probably have lots of data in existing systems like relational databases or traditional messaging systems, along with many applications that already use these systems. Kafka Connect allows you to continuously ingest data from external systems into Kafka, and vice versa. It is an extensible tool that runs connectors, which implement the custom logic for interacting with an external system. It is thus very easy to integrate existing systems with Kafka. To make this process even easier, there are hundreds of such connectors readily available.
+
+In this quickstart we'll see how to run Kafka Connect with simple connectors that import data from a file to a Kafka topic and export data from a Kafka topic to a file.
+
+First, make sure to add connect-file-3.8.0.jar to the plugin.path property in the Connect worker's configuration. For the purpose of this quickstart we'll use a relative path and consider the connectors' package as an uber jar, which works when the quickstart commands are run from the installation directory. However, it's worth noting that for production deployments using absolute paths is always preferable. See plugin.path for a detailed description of how to set this config.
+
+Edit the config/connect-standalone.properties file, add or change the plugin.path configuration property match the following, and save the file:
+
+$ echo "plugin.path=libs/connect-file-3.8.0.jar" >> config/connect-standalone.properties
+Then, start by creating some seed data to test with:
+
+$ echo -e "foo\nbar" > test.txt
+Or on Windows:
+$ echo foo > test.txt
+$ echo bar >> test.txt
+Next, we'll start two connectors running in standalone mode, which means they run in a single, local, dedicated process. We provide three configuration files as parameters. The first is always the configuration for the Kafka Connect process, containing common configuration such as the Kafka brokers to connect to and the serialization format for data. The remaining configuration files each specify a connector to create. These files include a unique connector name, the connector class to instantiate, and any other configuration required by the connector.
+
+$ bin/connect-standalone.sh config/connect-standalone.properties config/connect-file-source.properties config/connect-file-sink.properties
+These sample configuration files, included with Kafka, use the default local cluster configuration you started earlier and create two connectors: the first is a source connector that reads lines from an input file and produces each to a Kafka topic and the second is a sink connector that reads messages from a Kafka topic and produces each as a line in an output file.
+
+During startup you'll see a number of log messages, including some indicating that the connectors are being instantiated. Once the Kafka Connect process has started, the source connector should start reading lines from test.txt and producing them to the topic connect-test, and the sink connector should start reading messages from the topic connect-test and write them to the file test.sink.txt. We can verify the data has been delivered through the entire pipeline by examining the contents of the output file:
+
+$ more test.sink.txt
+foo
+bar
+Note that the data is being stored in the Kafka topic connect-test, so we can also run a console consumer to see the data in the topic (or use custom consumer code to process it):
+
+$ bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic connect-test --from-beginning
+{"schema":{"type":"string","optional":false},"payload":"foo"}
+{"schema":{"type":"string","optional":false},"payload":"bar"}
+…
+The connectors continue to process data, so we can add data to the file and see it move through the pipeline:
+
+$ echo "Another line" >> test.txt
+You should see the line appear in the console consumer output and in the sink file.
+
+./bin/connect-standalone.sh config/connect-standalone.properties config/connect-file-source.properties config/connect-file-sink.properties
+
+
+curl -X POST -H "Content-Type: application/json" --data '{
+  "name": "file-stream-source",
+  "config": {
+    "connector.class": "FileStreamSource",
+    "tasks.max": "1",
+    "file": "/data/input.txt",
+    "topic": "test-topic"
+  }
+}' http://connect:8083/connectors

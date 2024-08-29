@@ -10,11 +10,16 @@ import org.apache.kafka.streams.StreamsConfig;
 
 public class StreamsMain {
 
+    private static final String TOPIC_FROM = System.getenv("TOPIC_FROM");
+    private static final String TOPIC_TO = System.getenv("TOPIC_TO");
+
     public static void main(String[] args) {
 
         final StreamsBuilder builder = new StreamsBuilder();
 
-        builder.stream(System.getenv("TOPIC_FROM")).peek((o, o2) -> System.out.println("key: " + o + ", value: " + o2)).to(System.getenv("TOPIC_TO"));
+        builder.stream(TOPIC_FROM)
+                .peek((o, o2) -> System.out.println("key: " + o + ", value: " + o2))
+                .to(TOPIC_TO);
 
         final KafkaStreams streams = new KafkaStreams(builder.build(), getProperties());
         final CountDownLatch latch = new CountDownLatch(1);

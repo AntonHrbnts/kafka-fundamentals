@@ -8,10 +8,12 @@
     <artifactId>kafka-fundamentals</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
+
     <modules>
         <module>kafka-native-consumer</module>
         <module>kafka-native-producer</module>
         <module>kafka-native-streams</module>
+        <module>order-types</module>
         <module>kafka-connect-jdbc</module>
         <module>order-listener</module>
         <module>order-rest</module>

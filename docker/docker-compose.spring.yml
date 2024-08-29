@@ -17,3 +17,9 @@ services:
       spring.jpa.hibernate.ddl-auto: create
     depends_on:
       - postgres
+  spring-rest:
+    image: orders-rest
+    ports:
+      - 8080:8080
+    environment:
+      spring.kafka.bootstrap-servers: broker-1:19092,broker-2:19092,broker-3:19092

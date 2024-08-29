@@ -12,6 +12,9 @@
         <module>kafka-native-consumer</module>
         <module>kafka-native-producer</module>
         <module>kafka-native-streams</module>
+        <module>kafka-connect-jdbc</module>
+        <module>order-listener</module>
+        <module>order-rest</module>
         <module>kafka-types</module>
     </modules>
 
@@ -21,7 +24,16 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <dependencyManagement>
+
         <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-parent</artifactId>
+                <version>3.3.0</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
             <dependency>
                 <groupId>org.apache.kafka</groupId>
                 <artifactId>kafka-clients</artifactId>

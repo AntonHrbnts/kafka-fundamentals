@@ -54,7 +54,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>order.servcie.OrderServiceApplication</mainClass>
+                            <mainClass>order.service.OrderServiceApplication</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>

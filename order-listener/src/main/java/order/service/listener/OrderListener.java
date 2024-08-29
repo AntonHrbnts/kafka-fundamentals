@@ -1,11 +1,11 @@
-package order.servcie.listener;
+package order.service.listener;
 
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
 import lombok.RequiredArgsConstructor;
-import order.servcie.data.OrderEntity;
-import order.servcie.data.OrderRepository;
+import order.service.data.OrderEntity;
+import order.service.data.OrderRepository;
 
 @Component
 @RequiredArgsConstructor

@@ -1,4 +1,4 @@
-package order.servcie.data;
+package order.service.data;
 
 import org.springframework.data.repository.CrudRepository;
 

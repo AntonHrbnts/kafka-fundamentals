@@ -1,5 +1,5 @@
 maven_build:
-	mvn clean install
+	mvn clean install -T4
 
 consumer_build:
 	cd kafka-native-consumer && docker build -t kafka-native-consumer .
@@ -13,7 +13,10 @@ stream_build:
 order_service_build:
 	cd order-listener && docker build -t orders-listener .
 
-build: maven_build consumer_build producer_build stream_build order_service_build
+order_rest_build:
+	cd order-rest && docker build -t orders-rest .
+
+build: maven_build consumer_build producer_build stream_build order_service_build order_rest_build
 
 start:
 	cd docker && \
@@ -48,5 +51,6 @@ stop:
 
 restart: stop start
 
+rebuild: stop build start
 # info-topics:
 #     docker exec broker-1 ./opt/kafka/bin/kafka-topics.sh --list --bootstrap-server broker-1:19092,broker-2:19092,broker-3:19092
